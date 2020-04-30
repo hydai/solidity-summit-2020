@@ -1,0 +1,28 @@
+
+======= ./devcon_example.yul (EVM) =======
+
+Pretty printed source:
+object "object" {
+    code {
+        sstore(0, array_sum(calldataload(0)))
+        function array_sum(x) -> sum
+        {
+            let length := calldataload(x)
+            for { let i := 0 } lt(i, length) { i := add(i, 1) }
+            {
+                sum := add(sum, array_load(x, i))
+            }
+        }
+        function array_load(x, i) -> v
+        {
+            let len := calldataload(x)
+            if iszero(lt(i, len)) { revert(0, 0) }
+            let data := add(x, 0x20)
+            v := calldataload(add(data, mul(i, 0x20)))
+        }
+    }
+}
+
+
+Binary representation:
+6008600035600f565b6000556064565b6000813560005b8181101560345760258185603c565b830192505b6001810190506016565b50505b919050565b600081358084101515604e5760006000fd5b6020830160208502810135925050505b92915050565b
